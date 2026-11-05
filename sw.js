@@ -1,6 +1,6 @@
 /* Espace client Comptarapide — service worker (modèle LEVIX)
    HTML : réseau d'abord ; fichiers statiques : cache ; autres domaines (Supabase, Stripe) : jamais interceptés */
-const CACHE='comptarapide-ec-v1';
+const CACHE='comptarapide-ec-v2';
 const ASSETS=['./','index.html','style.css','i18n.js','textes-app.js','app.js','config.js','manifest.json','logo.png','icon-192.png','icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()).catch(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});

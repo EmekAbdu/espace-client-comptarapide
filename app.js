@@ -155,7 +155,8 @@ function lier(x){
   if($("fCnx"))$("fCnx").onsubmit=e=>{e.preventDefault();const email=$("cEmail").value.trim();
     action(async()=>{const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname}});if(error)throw error},x.lienEnvoye(esc(email)))};
   if($("fJoin"))$("fJoin").onsubmit=e=>{e.preventDefault();
-    action(()=>fn("rejoindre",{code:$("jCode").value,prenom:$("jPre").value,nom:$("jNom").value,langue:S.lang}),"")};
+    const v={code:$("jCode").value,prenom:$("jPre").value,nom:$("jNom").value,langue:S.lang};
+    action(()=>fn("rejoindre",v),"")};
   if($("pm"))$("pm").onclick=()=>{if(S.pers>1){S.pers--;render()}};
   if($("pp"))$("pp").onclick=()=>{if(S.pers<50){S.pers++;render()}};
   if($("go"))$("go").onclick=()=>action(async()=>{const r=await fn("abonnement",{quantite:S.pers,retour:location.origin+location.pathname});location.href=r.url});
@@ -174,7 +175,8 @@ function lier(x){
       const {error}=await sb.from("pieces").insert({entreprise_id:S.ent.id,membre_id:S.user.id,rubrique:rub,chemin});if(error)throw error;
       S.photo=null},x.sentOk)};
   if($("ask"))$("ask").onsubmit=e=>{e.preventDefault();
-    action(async()=>{const {error}=await sb.from("demandes").insert({entreprise_id:S.ent.id,membre_id:S.user.id,rubrique:$("aRub").value,document:$("aDoc").value.trim(),precisions:$("aMsg").value.trim()||null});if(error)throw error},x.asked)};
+    const v={entreprise_id:S.ent.id,membre_id:S.user.id,rubrique:$("aRub").value,document:$("aDoc").value.trim(),precisions:$("aMsg").value.trim()||null};
+    action(async()=>{const {error}=await sb.from("demandes").insert(v);if(error)throw error},x.asked)};
   if($("res"))$("res").onclick=()=>{const a=S.abo;
     $("modale").innerHTML=`<h3>${x.resQ}</h3><p class="lead">${a.statut==="trialing"?x.resEssai:x.resTxt(fmt(a.prochaine_echeance))}</p><div class="btn-row"><button class="btn btn-s" id="mNo">${x.cancel}</button><button class="btn btn-d" id="mOk">${x.resOk}</button></div>`;
     $("voile").classList.add("on");$("mNo").onclick=()=>$("voile").classList.remove("on");
